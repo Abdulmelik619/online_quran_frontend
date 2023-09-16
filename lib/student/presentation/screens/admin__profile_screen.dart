@@ -72,28 +72,12 @@ class _ManageStudentsScreenState extends State<AdminProfileScreen> {
 
   bool _isSearching = false;
 
-  void _addStudent(Student student) {
-    setState(() {
-      _students.add(student);
-    });
-  }
-
+ 
   final Color backgroundColor = Color.fromARGB(255, 31, 34, 36);
 
-  void _editStudent(int index, Student student) {
-    setState(() {
-      _students[index] = student;
-    });
-    _searchResults = _searchStudents(_searchController.text);
-  }
+  
 
-  void _deleteStudent(int index) {
-    setState(() {
-      _students.removeAt(index);
-    });
-    _searchResults = _searchStudents(_searchController.text);
-  }
-
+  
   List<Student> _searchStudents(String query) {
     if (query.isEmpty) {
       return _students;
@@ -121,7 +105,6 @@ class _ManageStudentsScreenState extends State<AdminProfileScreen> {
       );
       ClassHolder.add(student);
     }
-    print(ClassHolder[0].className);
     setState(() {
       classList = ClassHolder;
     });
@@ -321,7 +304,6 @@ class _ManageStudentsScreenState extends State<AdminProfileScreen> {
             } else if (state is StudentUpdateOperationSuccess) {
               _students = state.students;
             }
-            print("State: ${_students[0]}");
 
             return MaterialApp(
               home: Container(
@@ -434,211 +416,242 @@ class _ManageStudentsScreenState extends State<AdminProfileScreen> {
                               // SizedBox(height: 16),
                               Expanded(
                                 child: _isSearching
-                                    ? ListView.builder(
-                                        itemCount: _searchResults.length,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            leading: Padding(
-                                              padding: EdgeInsets.only(top: 2),
-                                              child: Container(
-                                                width: 40.0,
-                                                height: 40.0,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: NetworkImage(
-                                                        _searchResults[index]
-                                                            .avatar),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            title: Text(
-                                              _searchResults[index].fullName,
+                                    ? _searchResults.isEmpty
+                                        ? Center(
+                                            child: Text(
+                                              'No students found',
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
-                                            subtitle: Text(
-                                              _searchResults[index].email,
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            trailing: IconButton(
-                                                color: Colors.white,
-                                                icon: Icon(Icons.delete),
-                                                onPressed: () => {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return AlertDialog(
-                                                            title: Text(
-                                                                "Delete Student"),
-                                                            content: Text(
-                                                                "Are you sure you want to delete ${_searchResults[index].fullName}"),
-                                                            actions: [
-                                                              TextButton(
-                                                                child: Text(
-                                                                    "Cancel"),
-                                                                onPressed: () {
-                                                                  // Close dialog box
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                              ),
-                                                              TextButton(
-                                                                child: Text(
-                                                                    "Delete"),
-                                                                onPressed: () {
-                                                                  // Delete student and close dialog box
-                                                                  BlocProvider.of<
-                                                                              AdminBloc>(
-                                                                          context)
-                                                                      .add(DeleteButtonPressed(
-                                                                          email:
-                                                                              _searchResults[index].email));
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                              ),
-                                                            ],
-                                                          );
-                                                        },
-                                                      )
-                                                    }),
-                                            onTap: () {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return EditProfileBody(
-                                                      student: _searchResults[
-                                                          index]);
-                                                },
-                                              );
-                                            },
-                                          );
-                                        },
-                                      )
-                                    : Container(
-                                        // decoration: BoxDecoration(color: Color.fromARGB(255, 31, 34, 36)),
-                                        child: ListView.builder(
-                                          itemCount: _students.length,
-                                          itemBuilder: (context, index) {
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                ListTile(
-                                                  leading: Padding(
-                                                    padding:
-                                                        EdgeInsets.only(top: 2),
-                                                    child: Container(
-                                                      width: 50.0,
-                                                      height: 50.0,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                        image: DecorationImage(
-                                                          fit: BoxFit.cover,
-                                                          image: NetworkImage(
-                                                              _students[index]
-                                                                  .avatar),
-                                                        ),
+                                          )
+                                        : ListView.builder(
+                                            itemCount: _searchResults.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                leading: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 2),
+                                                  child: Container(
+                                                    width: 40.0,
+                                                    height: 40.0,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: NetworkImage(
+                                                            _searchResults[
+                                                                    index]
+                                                                .avatar),
                                                       ),
                                                     ),
                                                   ),
-                                                  title: Text(
-                                                    _students[index].fullName,
-                                                    style: GoogleFonts.poppins(
-                                                      color: true
-                                                          ? Colors.white
-                                                          : const Color(
-                                                              0xff1D1617),
-                                                      fontSize:
-                                                          size.height * 0.022,
-                                                    ),
-                                                  ),
-                                                  subtitle: Text(
-                                                    _students[index].email,
-                                                    style: GoogleFonts.poppins(
-                                                      color: true
-                                                          ? Colors.white
-                                                          : const Color(
-                                                              0xff1D1617),
-                                                      fontSize:
-                                                          size.height * 0.012,
-                                                    ),
-                                                  ),
-                                                  trailing: IconButton(
-                                                      color: Colors.white,
-                                                      icon: Icon(Icons.delete),
-                                                      onPressed: () => {
-                                                            showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return AlertDialog(
-                                                                  title: Text(
-                                                                      "Delete Student"),
-                                                                  content: Text(
-                                                                      "Are you sure you want to delete ${_students[index].fullName}"),
-                                                                  actions: [
-                                                                    TextButton(
-                                                                      child: Text(
-                                                                          "Cancel"),
-                                                                      onPressed:
-                                                                          () {
-                                                                        // Close dialog box
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                    ),
-                                                                    TextButton(
-                                                                      child: Text(
-                                                                          "Delete"),
-                                                                      onPressed:
-                                                                          () {
-                                                                        // Delete student and close dialog box
-                                                                        BlocProvider.of<AdminBloc>(context).add(DeleteButtonPressed(
-                                                                            email:
-                                                                                _students[index].email));
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              },
-                                                            )
-                                                          }),
-                                                  onTap: () {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return EditProfileBody(
-                                                            student: _students[
-                                                                index]);
-                                                      },
-                                                    );
-                                                  },
                                                 ),
-                                                Container(
-                                                  height: 0.3,
-                                                  color: Colors.white,
-                                                )
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                      ),
+                                                title: Text(
+                                                  _searchResults[index]
+                                                      .fullName,
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                subtitle: Text(
+                                                  _searchResults[index].email,
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                trailing: IconButton(
+                                                    color: Colors.white,
+                                                    icon: Icon(Icons.delete),
+                                                    onPressed: () => {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    "Delete Student"),
+                                                                content: Text(
+                                                                    "Are you sure you want to delete ${_searchResults[index].fullName}"),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    child: Text(
+                                                                        "Cancel"),
+                                                                    onPressed:
+                                                                        () {
+                                                                      // Close dialog box
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                  ),
+                                                                  TextButton(
+                                                                    child: Text(
+                                                                        "Delete"),
+                                                                    onPressed:
+                                                                        () {
+                                                                      // Delete student and close dialog box
+                                                                      BlocProvider.of<AdminBloc>(
+                                                                              context)
+                                                                          .add(DeleteButtonPressed(
+                                                                              email: _searchResults[index].email));
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          )
+                                                        }),
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return EditProfileBody(
+                                                          student:
+                                                              _searchResults[
+                                                                  index]);
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          )
+                                    : _students.isEmpty
+                                        ? Center(
+                                            child: Text(
+                                              'No students found',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          )
+                                        : Container(
+                                            // decoration: BoxDecoration(color: Color.fromARGB(255, 31, 34, 36)),
+                                            child: ListView.builder(
+                                              itemCount: _students.length,
+                                              itemBuilder: (context, index) {
+                                                return Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    ListTile(
+                                                      leading: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 2),
+                                                        child: Container(
+                                                          width: 50.0,
+                                                          height: 50.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            image:
+                                                                DecorationImage(
+                                                              fit: BoxFit.cover,
+                                                              image: NetworkImage(
+                                                                  _students[
+                                                                          index]
+                                                                      .avatar),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      title: Text(
+                                                        _students[index]
+                                                            .fullName,
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: true
+                                                              ? Colors.white
+                                                              : const Color(
+                                                                  0xff1D1617),
+                                                          fontSize:
+                                                              size.height *
+                                                                  0.022,
+                                                        ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        _students[index].email,
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: true
+                                                              ? Colors.white
+                                                              : const Color(
+                                                                  0xff1D1617),
+                                                          fontSize:
+                                                              size.height *
+                                                                  0.012,
+                                                        ),
+                                                      ),
+                                                      trailing: IconButton(
+                                                          color: Colors.white,
+                                                          icon: Icon(
+                                                              Icons.delete),
+                                                          onPressed: () => {
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return AlertDialog(
+                                                                      title: Text(
+                                                                          "Delete Student"),
+                                                                      content: Text(
+                                                                          "Are you sure you want to delete ${_students[index].fullName}"),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          child:
+                                                                              Text("Cancel"),
+                                                                          onPressed:
+                                                                              () {
+                                                                            // Close dialog box
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                        ),
+                                                                        TextButton(
+                                                                          child:
+                                                                              Text("Delete"),
+                                                                          onPressed:
+                                                                              () {
+                                                                            // Delete student and close dialog box
+                                                                            BlocProvider.of<AdminBloc>(context).add(DeleteButtonPressed(email: _students[index].email));
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  },
+                                                                )
+                                                              }),
+                                                      onTap: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return EditProfileBody(
+                                                                student:
+                                                                    _students[
+                                                                        index]);
+                                                          },
+                                                        );
+                                                      },
+                                                    ),
+                                                    Container(
+                                                      height: 0.3,
+                                                      color: Colors.white,
+                                                    )
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ),
                               ),
                             ],
                           ),

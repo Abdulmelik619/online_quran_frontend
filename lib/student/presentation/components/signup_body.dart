@@ -156,20 +156,20 @@ class SignUpState extends State<SIgnUpBody> {
     String username = generateRandomString(6);
     String password = generateRandomString(4);
 
-    var response =
-        await http.post(Uri.parse("http://127.0.0.1:3000/student/getStudent"),
-            headers: <String, String>{"Content-Type": "application/json"},
-            body: jsonEncode({
-              "email": username,
-            }));
+    var response = await http.post(
+        Uri.parse("http://127.0.0.1:3000/student/getStudent"),
+        headers: <String, String>{"Content-Type": "application/json"},
+        body: jsonEncode({
+          "email": username,
+        }));
     while (response.body.length != 0) {
       username = generateRandomString(8);
-      response =
-          await http.post(Uri.parse("http://127.0.0.1:3000/student/getStudent"),
-              headers: <String, String>{"Content-Type": "application/json"},
-              body: jsonEncode({
-                "email": username,
-              }));
+      response = await http.post(
+          Uri.parse("http://127.0.0.1:3000/student/getStudent"),
+          headers: <String, String>{"Content-Type": "application/json"},
+          body: jsonEncode({
+            "email": username,
+          }));
     }
 
     return {"username": username, "password": password};
@@ -711,12 +711,16 @@ class SignUpState extends State<SIgnUpBody> {
                                     },
                                     items: [
                                       DropdownMenuItem(
-                                        value: 'Hifz',
-                                        child: Text('Hifz'),
+                                        value: 'ሂፍዝ',
+                                        child: Text('ሂፍዝ'),
                                       ),
                                       DropdownMenuItem(
-                                        value: 'Nezor',
-                                        child: Text('Nezor'),
+                                        value: 'ነዞር',
+                                        child: Text('ነዞር'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'ቃኢዳ',
+                                        child: Text('ቃኢዳ'),
                                       ),
                                     ]
                                     // validator: (value) {
@@ -781,7 +785,7 @@ class SignUpState extends State<SIgnUpBody> {
                                           color: const Color(0xff7B6F72),
                                         ),
                                       ),
-                                      hintText: 'Select Sex ',
+                                      hintText: 'ፆታ  ',
                                       hintStyle: TextStyle(
                                         color: isDarkMode
                                             ? const Color(0xffADA4A5)
@@ -809,12 +813,12 @@ class SignUpState extends State<SIgnUpBody> {
                                     },
                                     items: [
                                       DropdownMenuItem(
-                                        value: 'Male',
-                                        child: Text('Male'),
+                                        value: 'ወንድ',
+                                        child: Text('ወንድ'),
                                       ),
                                       DropdownMenuItem(
-                                        value: 'Female',
-                                        child: Text('Female'),
+                                        value: 'ሴት',
+                                        child: Text('ሴት'),
                                       ),
                                     ]
                                     // validator: (value) {
@@ -871,7 +875,6 @@ class SignUpState extends State<SIgnUpBody> {
                         Stack(
                           children: [
                             ElevatedButton.icon(
-                              
                               onPressed: () async {
                                 BlocProvider.of<AdminBloc>(context)
                                     .add(AddImage());
@@ -894,7 +897,7 @@ class SignUpState extends State<SIgnUpBody> {
                                   child: CircularProgressIndicator(),
                                 ),
                               )
-                          ], 
+                          ],
                         ),
                         Stack(
                           children: [
@@ -1000,8 +1003,9 @@ class SignUpState extends State<SIgnUpBody> {
                                                       _country,
                                                       _sex,
                                                       "Al-Fatiha",
-                                                       AvatarModel.create(_avatarImageUrl ?? "")
-                                                       );
+                                                      AvatarModel.create(
+                                                          _avatarImageUrl ??
+                                                              ""));
 
                                               setState(() {
                                                 _fullName = "";

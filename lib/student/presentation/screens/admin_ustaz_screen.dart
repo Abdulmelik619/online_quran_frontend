@@ -360,209 +360,238 @@ class _ManageStudentsScreenState extends State<AdminUstazScreen> {
                               // SizedBox(height: 16),
                               Expanded(
                                 child: _isSearching
-                                    ? ListView.builder(
-                                        itemCount: _searchResults.length,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            leading: Padding(
-                                              padding: EdgeInsets.only(top: 2),
-                                              child: Container(
-                                                width: 40.0,
-                                                height: 40.0,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: NetworkImage(
-                                                        _searchResults[index].avatar),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            title: Text(
-                                              _searchResults[index].fullName,
+                                    ? _searchResults.isEmpty
+                                        ? Center(
+                                            child: Text(
+                                              'No Ustazs found',
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
-                                            subtitle: Text(
-                                              _searchResults[index].email,
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            trailing: IconButton(
-                                                color: Colors.white,
-                                                icon: Icon(Icons.delete),
-                                                onPressed: () => {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return AlertDialog(
-                                                            title: Text(
-                                                                "Delete Ustaz"),
-                                                            content: Text(
-                                                                "Are you sure you want to delete ${_searchResults[index].fullName}"),
-                                                            actions: [
-                                                              TextButton(
-                                                                child: Text(
-                                                                    "Cancel"),
-                                                                onPressed: () {
-                                                                  // Close dialog box
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                              ),
-                                                              TextButton(
-                                                                child: Text(
-                                                                    "Delete"),
-                                                                onPressed: () {
-                                                                  // Delete student and close dialog box
-                                                                  BlocProvider.of<
-                                                                              AdminUstazBloc>(
-                                                                          context)
-                                                                      .add(DeleteUstazButtonPressed(
-                                                                          email:
-                                                                              _searchResults[index].email));
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                              ),
-                                                            ],
-                                                          );
-                                                        },
-                                                      )
-                                                    }),
-                                            onTap: () {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return UstazEditProfileBody(
-                                                      ustaz: _searchResults[
-                                                          index]);
-                                                },
-                                              );
-                                            },
-                                          );
-                                        },
-                                      )
-                                    : Container(
-                                        // decoration: BoxDecoration(color: Color.fromARGB(255, 31, 34, 36)),
-                                        child: ListView.builder(
-                                          itemCount: _ustazs.length,
-                                          itemBuilder: (context, index) {
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                ListTile(
-                                                  leading: Padding(
-                                                    padding:
-                                                        EdgeInsets.only(top: 2),
-                                                    child: Container(
-                                                      width: 50.0,
-                                                      height: 50.0,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                        image: DecorationImage(
-                                                          fit: BoxFit.cover,
-                                                          image: NetworkImage(
-                                                              _ustazs[index].avatar),
-                                                        ),
+                                          )
+                                        : ListView.builder(
+                                            itemCount: _searchResults.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                leading: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 2),
+                                                  child: Container(
+                                                    width: 40.0,
+                                                    height: 40.0,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: NetworkImage(
+                                                            _searchResults[
+                                                                    index]
+                                                                .avatar),
                                                       ),
                                                     ),
                                                   ),
-                                                  title: Text(
-                                                    _ustazs[index].fullName,
-                                                    style: GoogleFonts.poppins(
-                                                      color: true
-                                                          ? Colors.white
-                                                          : const Color(
-                                                              0xff1D1617),
-                                                      fontSize:
-                                                          size.height * 0.022,
-                                                    ),
-                                                  ),
-                                                  subtitle: Text(
-                                                    _ustazs[index].email,
-                                                    style: GoogleFonts.poppins(
-                                                      color: true
-                                                          ? Colors.white
-                                                          : const Color(
-                                                              0xff1D1617),
-                                                      fontSize:
-                                                          size.height * 0.012,
-                                                    ),
-                                                  ),
-                                                  trailing: IconButton(
-                                                      color: Colors.white,
-                                                      icon: Icon(Icons.delete),
-                                                      onPressed: () => {
-                                                            showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return AlertDialog(
-                                                                  title: Text(
-                                                                      "Delete Ustaz"),
-                                                                  content: Text(
-                                                                      "Are you sure you want to delete ${_ustazs[index].fullName}"),
-                                                                  actions: [
-                                                                    TextButton(
-                                                                      child: Text(
-                                                                          "Cancel"),
-                                                                      onPressed:
-                                                                          () {
-                                                                        // Close dialog box
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                    ),
-                                                                    TextButton(
-                                                                      child: Text(
-                                                                          "Delete"),
-                                                                      onPressed:
-                                                                          () {
-                                                                        // Delete student and close dialog box
-                                                                        BlocProvider.of<AdminUstazBloc>(context).add(DeleteUstazButtonPressed(
-                                                                            email:
-                                                                                _ustazs[index].email));
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              },
-                                                            )
-                                                          }),
-                                                  onTap: () {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return UstazEditProfileBody(
-                                                            ustaz:
-                                                                _ustazs[index]);
-                                                      },
-                                                    );
-                                                  },
                                                 ),
-                                                Container(
-                                                  height: 0.3,
-                                                  color: Colors.white,
-                                                )
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                      ),
+                                                title: Text(
+                                                  _searchResults[index]
+                                                      .fullName,
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                subtitle: Text(
+                                                  _searchResults[index].email,
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                trailing: IconButton(
+                                                    color: Colors.white,
+                                                    icon: Icon(Icons.delete),
+                                                    onPressed: () => {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    "Delete Ustaz"),
+                                                                content: Text(
+                                                                    "Are you sure you want to delete ${_searchResults[index].fullName}"),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    child: Text(
+                                                                        "Cancel"),
+                                                                    onPressed:
+                                                                        () {
+                                                                      // Close dialog box
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                  ),
+                                                                  TextButton(
+                                                                    child: Text(
+                                                                        "Delete"),
+                                                                    onPressed:
+                                                                        () {
+                                                                      // Delete student and close dialog box
+                                                                      BlocProvider.of<AdminUstazBloc>(
+                                                                              context)
+                                                                          .add(DeleteUstazButtonPressed(
+                                                                              email: _searchResults[index].email));
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          )
+                                                        }),
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return UstazEditProfileBody(
+                                                          ustaz: _searchResults[
+                                                              index]);
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          )
+                                    : _ustazs.isEmpty
+                                        ? Center(
+                                            child: Text(
+                                              'No Ustazs found',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          )
+                                        : Container(
+                                            // decoration: BoxDecoration(color: Color.fromARGB(255, 31, 34, 36)),
+                                            child: ListView.builder(
+                                              itemCount: _ustazs.length,
+                                              itemBuilder: (context, index) {
+                                                return Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    ListTile(
+                                                      leading: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 2),
+                                                        child: Container(
+                                                          width: 50.0,
+                                                          height: 50.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            image:
+                                                                DecorationImage(
+                                                              fit: BoxFit.cover,
+                                                              image: NetworkImage(
+                                                                  _ustazs[index]
+                                                                      .avatar),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      title: Text(
+                                                        _ustazs[index].fullName,
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: true
+                                                              ? Colors.white
+                                                              : const Color(
+                                                                  0xff1D1617),
+                                                          fontSize:
+                                                              size.height *
+                                                                  0.022,
+                                                        ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        _ustazs[index].email,
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: true
+                                                              ? Colors.white
+                                                              : const Color(
+                                                                  0xff1D1617),
+                                                          fontSize:
+                                                              size.height *
+                                                                  0.012,
+                                                        ),
+                                                      ),
+                                                      trailing: IconButton(
+                                                          color: Colors.white,
+                                                          icon: Icon(
+                                                              Icons.delete),
+                                                          onPressed: () => {
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return AlertDialog(
+                                                                      title: Text(
+                                                                          "Delete Ustaz"),
+                                                                      content: Text(
+                                                                          "Are you sure you want to delete ${_ustazs[index].fullName}"),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          child:
+                                                                              Text("Cancel"),
+                                                                          onPressed:
+                                                                              () {
+                                                                            // Close dialog box
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                        ),
+                                                                        TextButton(
+                                                                          child:
+                                                                              Text("Delete"),
+                                                                          onPressed:
+                                                                              () {
+                                                                            // Delete student and close dialog box
+                                                                            BlocProvider.of<AdminUstazBloc>(context).add(DeleteUstazButtonPressed(email: _ustazs[index].email));
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  },
+                                                                )
+                                                              }),
+                                                      onTap: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return UstazEditProfileBody(
+                                                                ustaz: _ustazs[
+                                                                    index]);
+                                                          },
+                                                        );
+                                                      },
+                                                    ),
+                                                    Container(
+                                                      height: 0.3,
+                                                      color: Colors.white,
+                                                    )
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ),
                               ),
                             ],
                           ),

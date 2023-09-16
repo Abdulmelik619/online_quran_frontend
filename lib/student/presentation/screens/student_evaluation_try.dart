@@ -296,7 +296,7 @@ class _StudentListState extends State<StudentList> {
                                 SizedBox(height: 0),
                                 SizedBox(
                                   width: 45,
-                                  height: 32,
+                                  height: 44,
                                   child: TextFormField(
                                     initialValue: students_fetched[index]
                                         .score
@@ -357,8 +357,8 @@ class _StudentListState extends State<StudentList> {
                                   ),
                                   SizedBox(height: 0),
                                   SizedBox(
-                                    width: 156,
-                                    height: 32,
+                                    width:210,
+                                    height: 44,
                                     child: DropdownButtonFormField<String>(
                                       style: GoogleFonts.poppins(
                                         color: isDarkMode
@@ -416,7 +416,7 @@ class _StudentListState extends State<StudentList> {
                                 Padding(
                                   padding: EdgeInsets.only(left: 5),
                                   child: Text(
-                                    'Ayah',
+                                    'Sofha',
                                     style: GoogleFonts.poppins(
                                       color: isDarkMode
                                           ? Colors.white
@@ -428,7 +428,7 @@ class _StudentListState extends State<StudentList> {
                                 SizedBox(height: 0),
                                 SizedBox(
                                   width: 60,
-                                  height: 32,
+                                  height: 44,
                                   child: TextFormField(
                                     initialValue: students_fetched[index]
                                         .ayah_number

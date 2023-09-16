@@ -211,7 +211,7 @@ class UstazBloc extends Bloc<UstazEvent, UstazState> {
               await ustazRepository.updateUserProfile(event.student);
           print(studentProfile);
 
-          final abscent =
+          final abscent = 
               await ustazRepository.deleteabscent(event.student.id, event.date);
 
           print("abscent");

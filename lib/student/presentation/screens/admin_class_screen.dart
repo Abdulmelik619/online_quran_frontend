@@ -359,153 +359,165 @@ class _ManageStudentsScreenState extends State<AdminClassScreen> {
                                   // SizedBox(height: 16),
                                   Expanded(
                                     child: _isSearching
-                                        ? ListView.builder(
-                                            itemCount: _searchResults.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                title: Text(
-                                                  _searchResults[index]
-                                                      .className,
+                                        ? _searchResults.isEmpty
+                                            ? Center(
+                                                child: Text(
+                                                  'No classes found',
                                                   style: TextStyle(
                                                       color: Colors.white),
                                                 ),
-                                                trailing: IconButton(
-                                                    color: Colors.white,
-                                                    icon: Icon(Icons.delete),
-                                                    onPressed: () => {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                title: Text(
-                                                                    "Delete Class"),
-                                                                content: Text(
-                                                                    "Are you sure you want to delete ${_searchResults[index].className}"),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    child: Text(
-                                                                        "Cancel"),
-                                                                    onPressed:
-                                                                        () {
-                                                                      // Close dialog box
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                  TextButton(
-                                                                    child: Text(
-                                                                        "Delete"),
-                                                                    onPressed:
-                                                                        () {
-                                                                      // Delete student and close dialog box
-                                                                      BlocProvider.of<AdminClassBloc>(
-                                                                              context)
-                                                                          .add(DeleteClassButtonPressed(
-                                                                              id: _searchResults[index].className));
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          )
-                                                        }),
-                                                onTap: () {
-                                                 _showEditStudentDialog(
-                                                            context,
-                                                            _searchResults[index],
-                                                            index);
-                                                    
-                                                },
-                                              );
-                                            },
-                                          )
-                                        : Container(
-                                            // decoration: BoxDecoration(color: Color.fromARGB(255, 31, 34, 36)),
-                                            child: ListView.builder(
-                                              itemCount: classes.length,
-                                              itemBuilder: (context, index) {
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    ListTile(
-                                                      title: Text(
-                                                        classes[index]
-                                                            .className,
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                          color: true
-                                                              ? Colors.white
-                                                              : const Color(
-                                                                  0xff1D1617),
-                                                          fontSize:
-                                                              size.height *
-                                                                  0.022,
-                                                        ),
-                                                      ),
-                                                      trailing: IconButton(
-                                                          color: Colors.white,
-                                                          icon: Icon(
-                                                              Icons.delete),
-                                                          onPressed: () => {
-                                                                showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    return AlertDialog(
-                                                                      title: Text(
-                                                                          "Delete Class"),
-                                                                      content: Text(
-                                                                          "Are you sure you want to delete ${classes[index].className}"),
-                                                                      actions: [
-                                                                        TextButton(
-                                                                          child:
-                                                                              Text("Cancel"),
-                                                                          onPressed:
-                                                                              () {
-                                                                            // Close dialog box
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                        ),
-                                                                        TextButton(
-                                                                          child:
-                                                                              Text("Delete"),
-                                                                          onPressed:
-                                                                              () {
-                                                                            // Delete student and close dialog box
-                                                                            BlocProvider.of<AdminClassBloc>(context).add(DeleteClassButtonPressed(id: classes[index].className));
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                        ),
-                                                                      ],
-                                                                    );
-                                                                  },
-                                                                )
-                                                              }),
-                                                      onTap: () {
-                                                        _showEditStudentDialog(
-                                                            context,
-                                                            classes[index],
-                                                            index);
-                                                      },
+                                              )
+                                            : ListView.builder(
+                                                itemCount:
+                                                    _searchResults.length,
+                                                itemBuilder: (context, index) {
+                                                  return ListTile(
+                                                    title: Text(
+                                                      _searchResults[index]
+                                                          .className,
+                                                      style: TextStyle(
+                                                          color: Colors.white),
                                                     ),
-                                                    Container(
-                                                      height: 0.3,
-                                                      color: Colors.white,
-                                                    )
-                                                  ],
-                                                );
-                                              },
-                                            ),
-                                          ),
+                                                    trailing: IconButton(
+                                                        color: Colors.white,
+                                                        icon:
+                                                            Icon(Icons.delete),
+                                                        onPressed: () => {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    title: Text(
+                                                                        "Delete Class"),
+                                                                    content: Text(
+                                                                        "Are you sure you want to delete ${_searchResults[index].className}"),
+                                                                    actions: [
+                                                                      TextButton(
+                                                                        child: Text(
+                                                                            "Cancel"),
+                                                                        onPressed:
+                                                                            () {
+                                                                          // Close dialog box
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                      ),
+                                                                      TextButton(
+                                                                        child: Text(
+                                                                            "Delete"),
+                                                                        onPressed:
+                                                                            () {
+                                                                          // Delete student and close dialog box
+                                                                          BlocProvider.of<AdminClassBloc>(context)
+                                                                              .add(DeleteClassButtonPressed(id: _searchResults[index].className));
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              )
+                                                            }),
+                                                    onTap: () {
+                                                      _showEditStudentDialog(
+                                                          context,
+                                                          _searchResults[index],
+                                                          index);
+                                                    },
+                                                  );
+                                                },
+                                              )
+                                        : classes.isEmpty
+                                            ? Center(
+                                                child: Text(
+                                                  'No classes found',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            : Container(
+                                                // decoration: BoxDecoration(color: Color.fromARGB(255, 31, 34, 36)),
+                                                child: ListView.builder(
+                                                  itemCount: classes.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        ListTile(
+                                                          title: Text(
+                                                            classes[index]
+                                                                .className,
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                              color: true
+                                                                  ? Colors.white
+                                                                  : const Color(
+                                                                      0xff1D1617),
+                                                              fontSize:
+                                                                  size.height *
+                                                                      0.022,
+                                                            ),
+                                                          ),
+                                                          trailing: IconButton(
+                                                              color:
+                                                                  Colors.white,
+                                                              icon: Icon(
+                                                                  Icons.delete),
+                                                              onPressed: () => {
+                                                                    showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return AlertDialog(
+                                                                          title:
+                                                                              Text("Delete Class"),
+                                                                          content:
+                                                                              Text("Are you sure you want to delete ${classes[index].className}"),
+                                                                          actions: [
+                                                                            TextButton(
+                                                                              child: Text("Cancel"),
+                                                                              onPressed: () {
+                                                                                // Close dialog box
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                            ),
+                                                                            TextButton(
+                                                                              child: Text("Delete"),
+                                                                              onPressed: () {
+                                                                                // Delete student and close dialog box
+                                                                                BlocProvider.of<AdminClassBloc>(context).add(DeleteClassButtonPressed(id: classes[index].className));
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                            ),
+                                                                          ],
+                                                                        );
+                                                                      },
+                                                                    )
+                                                                  }),
+                                                          onTap: () {
+                                                            _showEditStudentDialog(
+                                                                context,
+                                                                classes[index],
+                                                                index);
+                                                          },
+                                                        ),
+                                                        Container(
+                                                          height: 0.3,
+                                                          color: Colors.white,
+                                                        )
+                                                      ],
+                                                    );
+                                                  },
+                                                ),
+                                              ),
                                   ),
                                 ],
                               ),

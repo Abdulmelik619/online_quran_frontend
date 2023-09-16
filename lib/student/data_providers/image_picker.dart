@@ -17,38 +17,39 @@ class UploadImage {
     }
 
     if (result != null) {
-      Uint8List? uploadfile = result.files.single.bytes;
-      String filename = basename(result.files.single.name);
-      return await uploadImage(uploadfile, filename);
+      PlatformFile file = result.files.first;
+    final path = file.path;
+    String filename = basename(file.name);
+    return await uploadImage(File(path!), filename);
     }
     return null;
   }
 
-  static Future<String?> uploadImage(Uint8List? file, String filename) async {
-    if (file != null) {
-      Dio dio = Dio();
+  static Future<String?> uploadImage(File file, String filename) async {
+  if (file != null) {
+    Dio dio = Dio();
 
-      FormData formData = FormData.fromMap({
-        "key": "13b897bcd803fd950bff64338f161de8",
-        "image": await MultipartFile.fromBytes(
-          file,
-          filename: filename,
-        ),
-        "name": filename,
-      });
-      var response = await dio.post(
-        "https://api.imgbb.com/1/upload",
-        data: formData,
-        onSendProgress: ((count, total) {
-          stdout.write("$count , $total");
-        }),
-      );
-      print(response.data);
-      String avatarUrl = response.data["data"]["url"];
-      print(avatarUrl);
-      return avatarUrl;
-    } else {
-      return null;
-    }
+    FormData formData = FormData.fromMap({
+      "key": "13b897bcd803fd950bff64338f161de8",
+      "image": await MultipartFile.fromFile(
+        file.path,
+        filename: filename,
+      ),
+      "name": filename,
+    });
+    var response = await dio.post(
+      "https://api.imgbb.com/1/upload",
+      data: formData,
+      onSendProgress: ((count, total) {
+        stdout.write("$count , $total");
+      }),
+    );
+    print(response.data);
+    String avatarUrl = response.data["data"]["url"];
+    print(avatarUrl);
+    return avatarUrl;
+  } else {
+    return null;
   }
+}
 }

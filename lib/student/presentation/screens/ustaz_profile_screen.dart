@@ -172,7 +172,7 @@ class UstazProfileScreenBody extends StatelessWidget {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                              'https://source.unsplash.com/random'),
+                              snapshot.data!.ustaz.avatar),
                         ),
                       ),
                     ),

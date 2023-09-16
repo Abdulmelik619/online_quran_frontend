@@ -43,10 +43,11 @@ class _ManageStudentsScreenState extends State<StudentScoreScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs;
   }
-late Timer _timer;
+
+  late Timer _timer;
   String idGlobal = '';
 
-   Future<void> setId() async {
+  Future<void> setId() async {
     final SharedPreferences prefs = await init();
 
     String? id = prefs.getString("id");
@@ -122,180 +123,238 @@ late Timer _timer;
                   } else if (state is StudentScoreLoadSuccess) {
                     scores_fetched = state.scores;
 
-                    return Scaffold(
-                        bottomNavigationBar: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              height: 0.1,
-                              color:
-                                  Colors.grey[300], // set the color of the line
-                            ),
-                            BottomNavigationBar(
-                              backgroundColor: Color(0xFF1a1d22),
-                              items: const <BottomNavigationBarItem>[
-                                BottomNavigationBarItem(
-                                  backgroundColor: Colors.white,
-                                  icon: Icon(
-                                    Icons.home_outlined,
-                                  ),
-                                  label: 'Home  ',
-                                ),
-                                BottomNavigationBarItem(
-                                  backgroundColor: Colors.white,
-                                  icon: Icon(
-                                    Icons.people_outlined,
-                                  ),
-                                  label: 'Abscents',
-                                ),
-                                BottomNavigationBarItem(
-                                  backgroundColor: Colors.white,
-                                  icon: Icon(
-                                    Icons.score_outlined,
-                                  ),
-                                  label: 'Score',
-                                ),
-                              ],
-                              currentIndex: _selectedIndex,
-                              onTap: (int index) {
-                                setState(() {
-                                  _selectedIndex = index;
-                                });
+                    return WillPopScope(
+                      onWillPop: () async {
+                        // Custom back button behavior
+                        // Navigate to the previous screen
 
-                                switch (index) {
-                                  case 0:
-                                    BlocProvider.of<StudentBloc>(context).add(
-                                        Navigate(
-                                            email:
-                                                snapshot.data!.student.email));
-                                    GoRouter.of(context)
-                                        .push("/studentprofile");
-                                    break;
-                                  case 1:
-                                    BlocProvider.of<StudentBloc>(context).add(
-                                        StudentAbscentLoadEvent(
-                                            id: snapshot.data!.student.id));
-
-                                    GoRouter.of(context).push("/abscentscreen");
-                                    break;
-                                  case 2:
-                                    BlocProvider.of<StudentBloc>(context).add(
-                                        StudentScoreLoadEvent(
-                                            id: snapshot.data!.student.id));
-
-                                    GoRouter.of(context).push("/scorescreen");
-                                    break;
-                                }
-                              },
-                              type: BottomNavigationBarType.fixed,
-                              selectedItemColor: Colors.blue,
-                              selectedIconTheme: IconThemeData(
-                                color: Colors.blue,
+                        BlocProvider.of<StudentBloc>(context)
+                            .add(Navigate(email: snapshot.data!.student.email));
+                        GoRouter.of(context).push("/studentprofile");
+                        return false; // Return 'false' to prevent the default back button behavior
+                      },
+                      child: Scaffold(
+                          bottomNavigationBar: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                height: 0.1,
+                                color: Colors
+                                    .grey[300], // set the color of the line
                               ),
-                              unselectedItemColor: Colors.white,
-                              unselectedLabelStyle: GoogleFonts.poppins(
-                                color: true
-                                    ? Colors.white
-                                    : const Color(0xff1D1617),
-                                fontSize: size.height * 0.015,
+                              BottomNavigationBar(
+                                backgroundColor: Color(0xFF1a1d22),
+                                items: const <BottomNavigationBarItem>[
+                                  BottomNavigationBarItem(
+                                    backgroundColor: Colors.white,
+                                    icon: Icon(
+                                      Icons.home_outlined,
+                                    ),
+                                    label: 'Home  ',
+                                  ),
+                                  BottomNavigationBarItem(
+                                    backgroundColor: Colors.white,
+                                    icon: Icon(
+                                      Icons.people_outlined,
+                                    ),
+                                    label: 'Abscents',
+                                  ),
+                                  BottomNavigationBarItem(
+                                    backgroundColor: Colors.white,
+                                    icon: Icon(
+                                      Icons.score_outlined,
+                                    ),
+                                    label: 'Score',
+                                  ),
+                                ],
+                                currentIndex: _selectedIndex,
+                                onTap: (int index) {
+                                  setState(() {
+                                    _selectedIndex = index;
+                                  });
+
+                                  switch (index) {
+                                    case 0:
+                                      BlocProvider.of<StudentBloc>(context).add(
+                                          Navigate(
+                                              email: snapshot
+                                                  .data!.student.email));
+                                      GoRouter.of(context)
+                                          .push("/studentprofile");
+                                      break;
+                                    case 1:
+                                      BlocProvider.of<StudentBloc>(context).add(
+                                          StudentAbscentLoadEvent(
+                                              id: snapshot.data!.student.id));
+
+                                      GoRouter.of(context)
+                                          .push("/abscentscreen");
+                                      break;
+                                    case 2:
+                                      BlocProvider.of<StudentBloc>(context).add(
+                                          StudentScoreLoadEvent(
+                                              id: snapshot.data!.student.id));
+
+                                      GoRouter.of(context).push("/scorescreen");
+                                      break;
+                                  }
+                                },
+                                type: BottomNavigationBarType.fixed,
+                                selectedItemColor: Colors.blue,
+                                selectedIconTheme: IconThemeData(
+                                  color: Colors.blue,
+                                ),
+                                unselectedItemColor: Colors.white,
+                                unselectedLabelStyle: GoogleFonts.poppins(
+                                  color: true
+                                      ? Colors.white
+                                      : const Color(0xff1D1617),
+                                  fontSize: size.height * 0.015,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        body: MaterialApp(
-                          home: Container(
-                            child: Scaffold(
-                              body: Container(
-                                height: size.height,
-                                width: size.width * 1.1,
-                                decoration:
-                                    BoxDecoration(color: Color(0xFF1a1d22)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Container(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // SizedBox(height: 16),
-                                        scores_fetched.length == 0
-                                            ? SizedBox(height: 0, width: 0)
-                                            : Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16),
-                                                child: Text(
-                                                  "Date                                                                      Score",
-                                                  style: GoogleFonts.poppins(
-                                                      color: true
-                                                          ? Colors.white
-                                                          : const Color(
-                                                              0xff1D1617),
-                                                      fontSize:
-                                                          size.height * 0.022,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                            ],
+                          ),
+                          body: MaterialApp(
+                            home: Container(
+                              child: Scaffold(
+                                body: Container(
+                                  height: size.height,
+                                  width: size.width * 1.1,
+                                  decoration:
+                                      BoxDecoration(color: Color(0xFF1a1d22)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // SizedBox(height: 16),
+                                          scores_fetched.length == 0
+                                              ? SizedBox(height: 0, width: 0)
+                                              : Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      16, 16, 0, 0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Date",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: true
+                                                              ? Colors.white
+                                                              : const Color(
+                                                                  0xff1D1617),
+                                                          fontSize:
+                                                              size.height *
+                                                                  0.022,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Score     ",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: true
+                                                              ? Colors.white
+                                                              : const Color(
+                                                                  0xff1D1617),
+                                                          fontSize:
+                                                              size.height *
+                                                                  0.022,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                        Expanded(
-                                          child: scores_fetched.length == 0
-                                              ? Center(
-                                                  child: Text(
-                                                    'No Scores till Today',
-                                                    style: GoogleFonts.poppins(
-                                                      color: Colors.green,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      letterSpacing: 1.2,
+                                          Expanded(
+                                            child: scores_fetched.length == 0
+                                                ? Center(
+                                                    child: Text(
+                                                      'No Scores till Today',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        color: Colors.green,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        letterSpacing: 1.2,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    // decoration: BoxDecoration(color: Color.fromARGB(255, 31, 34, 36)),
+
+                                                    child: ListView.builder(
+                                                      itemCount:
+                                                          scores_fetched.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            ListTile(
+                                                                title: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                  Text(
+                                                                    "${scores_fetched[index].date}",
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      color: true
+                                                                          ? Colors
+                                                                              .white
+                                                                          : const Color(
+                                                                              0xff1D1617),
+                                                                      fontSize:
+                                                                          size.height *
+                                                                              0.022,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    "${scores_fetched[index].score}/10  ",
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      color: true
+                                                                          ? Colors
+                                                                              .white
+                                                                          : const Color(
+                                                                              0xff1D1617),
+                                                                      fontSize:
+                                                                          size.height *
+                                                                              0.022,
+                                                                    ),
+                                                                  ),
+                                                                ])),
+                                                            Container(
+                                                              height: 0.3,
+                                                              color:
+                                                                  Colors.white,
+                                                            )
+                                                          ],
+                                                        );
+                                                      },
                                                     ),
                                                   ),
-                                                )
-                                              : Container(
-                                                  // decoration: BoxDecoration(color: Color.fromARGB(255, 31, 34, 36)),
-
-                                                  child: ListView.builder(
-                                                    itemCount:
-                                                        scores_fetched.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          ListTile(
-                                                            title: Text(
-                                                              "${scores_fetched[index].date}                          ${scores_fetched[index].score}/10",
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                color: true
-                                                                    ? Colors
-                                                                        .white
-                                                                    : const Color(
-                                                                        0xff1D1617),
-                                                                fontSize:
-                                                                    size.height *
-                                                                        0.022,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            height: 0.3,
-                                                            color: Colors.white,
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                        ),
-                                      ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ));
+                          )),
+                    );
                   } else {
                     return const StudentErrorPage();
                   }

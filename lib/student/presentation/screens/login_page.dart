@@ -379,7 +379,7 @@ class LoginState extends State<LoginBody> {
                                       //validation for register
 
                                       if (_emailKey
-                                                  .currentState!.value!.length >
+                                                  .currentState!.value!.length >=
                                               5 ) {
                                         setState(() {
                                           _email =
